@@ -1,0 +1,93 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-header bg-success text-white">
+          <h4 class="mb-0">Sign Up</h4>
+        </div>
+        <div class="card-body">
+          <form #registerForm="ngForm" (ngSubmit)="onSubmit(registerForm)">
+
+            <!-- Username -->
+            <div class="mb-3">
+              <label for="userName" class="form-label">Username</label>
+              <input 
+                type="text" 
+                id="userName" 
+                name="userName" 
+                class="form-control"
+                placeholder="Enter your username"
+                [(ngModel)]="registerData.userName"
+                required
+                minlength="3"
+                #userName="ngModel">
+              <div *ngIf="userName.invalid && userName.touched" class="text-danger">
+                <div *ngIf="userName.errors?.['required']">Username is required.</div>
+                <div *ngIf="userName.errors?.['minlength']">Minimum 3 characters required.</div>
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                class="form-control"
+                placeholder="Enter your email"
+                [(ngModel)]="registerData.email"
+                required
+                email
+                #email="ngModel">
+              <div *ngIf="email.invalid && email.touched" class="text-danger">
+                <div *ngIf="email.errors?.['required']">Email is required.</div>
+                <div *ngIf="email.errors?.['email']">Enter a valid email.</div>
+              </div>
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input 
+                type="password" 
+                id="password" 
+                name="password" 
+                class="form-control"
+                placeholder="Enter your password"
+                [(ngModel)]="registerData.password"
+                required
+                minlength="6"
+                #password="ngModel">
+              <div *ngIf="password.invalid && password.touched" class="text-danger">
+                <div *ngIf="password.errors?.['required']">Password is required.</div>
+                <div *ngIf="password.errors?.['minlength']">Minimum 6 characters required.</div>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button 
+              type="submit" 
+              class="btn btn-success w-100"
+              [disabled]="registerForm.invalid">Sign Up</button>
+
+            <!-- Success / Error message -->
+            <div *ngIf="message" class="mt-2" [ngClass]="{'text-danger': isError, 'text-success': !isError}">
+              {{ message }}
+            </div>
+
+          </form>
+
+          <!-- 👇 Add this below the form -->
+          <div class="text-center mt-3">
+            <p class="mb-0">
+              Already have an account?
+              <a routerLink="/login" class="text-success fw-bold" style="text-decoration: none;">Login here</a>
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

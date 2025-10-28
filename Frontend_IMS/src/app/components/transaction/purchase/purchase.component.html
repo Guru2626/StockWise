@@ -1,0 +1,66 @@
+<div class="container mt-5 p-4 bg-light rounded shadow-sm" style="max-width: 700px;">
+  <h3 class="text-center mb-4">🛒 Purchase Product</h3>
+  <button class="btn btn-secondary btn-sm" (click)="goBack()">
+      ← Back
+    </button>
+
+  <!-- Alerts -->
+  <div *ngIf="errorMsg" class="alert alert-danger text-center">{{ errorMsg }}</div>
+  <div *ngIf="successMsg" class="alert alert-success text-center">{{ successMsg }}</div>
+
+  <form (ngSubmit)="submitPurchase(purchaseForm)" #purchaseForm="ngForm" novalidate>
+
+    <!-- Product Name (readonly) -->
+    <div class="mb-3">
+      <label class="form-label fw-semibold">Product Name</label>
+      <input type="text" class="form-control" [(ngModel)]="purchaseRequest.productName" name="productName" readonly>
+    </div>
+
+    <!-- Category (readonly) -->
+    <div class="mb-3">
+      <label class="form-label fw-semibold">Category</label>
+      <input type="text" class="form-control" [(ngModel)]="purchaseRequest.categoryName" name="categoryName" readonly>
+    </div>
+
+    <!-- Supplier (readonly) -->
+    <div class="mb-3">
+      <label class="form-label fw-semibold">Supplier</label>
+      <input type="text" class="form-control" [(ngModel)]="purchaseRequest.supplierName" name="supplierName" readonly>
+    </div>
+
+    <!-- Quantity -->
+    <div class="mb-3">
+      <label class="form-label fw-semibold">Quantity</label>
+      <input
+        type="number"
+        class="form-control"
+        name="quantity"
+        [(ngModel)]="purchaseRequest.quantity"
+        min="1"
+        required
+        (input)="updateTotalPrice()">
+    </div>
+
+    <!-- Unit Price -->
+    <div class="mb-3">
+      <label class="form-label fw-semibold">Price per Unit (₹)</label>
+      <input type="number" class="form-control" [value]="supplyPricePerUnit" readonly>
+    </div>
+
+    <!-- Total Price -->
+    <div class="mb-3">
+      <label class="form-label fw-semibold">Total Price (₹)</label>
+      <input type="number" class="form-control" [value]="totalPrice" readonly>
+    </div>
+
+    <!-- Buttons -->
+    <div class="d-flex justify-content-between mt-4">
+      <button type="submit" class="btn btn-success px-4" [disabled]="purchaseForm.invalid">
+        ✅ Purchase
+      </button>
+      <button type="button" class="btn btn-secondary px-4" (click)="router.navigate(['/product-supplier-list'])">
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>

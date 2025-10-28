@@ -1,0 +1,6 @@
+.card {
+  border-radius: 10px;
+}
+button:disabled {
+  cursor: not-allowed;
+}

@@ -1,0 +1,128 @@
+<div class="container mt-5 p-4 bg-light rounded shadow-sm" style="max-width: 700px;">
+  <h4 class="mb-3 text-center">Add Product Supplier</h4>
+   <button class="btn btn-secondary btn-sm" (click)="goBack()">
+      ← Back
+    </button>
+
+    <br>
+    <br>
+
+  <!-- Alerts -->
+  <div *ngIf="errorMsg" class="alert alert-danger text-center">{{ errorMsg }}</div>
+  <div *ngIf="successMsg" class="alert alert-success text-center">{{ successMsg }}</div>
+
+  <form (ngSubmit)="addProductSupplier(productSupplierForm)" #productSupplierForm="ngForm" novalidate>
+    
+    <!-- Product Name -->
+    <div class="mb-3">
+      <label for="productName" class="form-label fw-semibold">Product Name</label>
+      <input
+        type="text"
+        id="productName"
+        class="form-control"
+        name="productName"
+        [(ngModel)]="newProductSupplier.productName"
+        required
+        minlength="3"
+        #productName="ngModel"
+        placeholder="Enter product name"
+      >
+      <div *ngIf="productName.invalid && (productName.dirty || productSupplierForm.submitted)" class="text-danger mt-1">
+        <small *ngIf="productName.errors?.['required']">Product name is required.</small>
+        <small *ngIf="productName.errors?.['minlength']">Product name must be at least 3 characters.</small>
+      </div>
+    </div>
+
+    <!-- Category Dropdown -->
+    <div class="mb-3">
+      <label for="categoryName" class="form-label fw-semibold">Category</label>
+      <select
+        id="categoryName"
+        class="form-select"
+        name="categoryName"
+        [(ngModel)]="newProductSupplier.categoryName"
+        required
+        #categoryName="ngModel"
+      >
+        <option value="" disabled selected>Select Category</option>
+        <option *ngFor="let category of categories" [value]="category.categoryName">
+          {{ category.categoryName }}
+        </option>
+      </select>
+      <div *ngIf="categoryName.invalid && (categoryName.dirty || productSupplierForm.submitted)" class="text-danger mt-1">
+        <small>Category is required.</small>
+      </div>
+    </div>
+
+    <!-- Supplier Dropdown -->
+    <div class="mb-3">
+      <label for="supplierName" class="form-label fw-semibold">Supplier</label>
+      <select
+        id="supplierName"
+        class="form-select"
+        name="supplierName"
+        [(ngModel)]="newProductSupplier.supplierName"
+        required
+        #supplierName="ngModel"
+      >
+        <option value="" disabled selected>Select Supplier</option>
+        <option *ngFor="let supplier of suppliers" [value]="supplier.supplierName">
+          {{ supplier.supplierName }}
+        </option>
+      </select>
+      <div *ngIf="supplierName.invalid && (supplierName.dirty || productSupplierForm.submitted)" class="text-danger mt-1">
+        <small>Supplier is required.</small>
+      </div>
+    </div>
+
+    <!-- Supply Price -->
+    <div class="mb-3">
+      <label for="supplyPrice" class="form-label fw-semibold">Supply Price (₹)</label>
+      <input
+        type="number"
+        id="supplyPrice"
+        class="form-control"
+        name="supplyPrice"
+        [(ngModel)]="newProductSupplier.supplyPrice"
+        required
+        min="1"
+        #supplyPrice="ngModel"
+        placeholder="Enter supply price"
+      >
+      <div *ngIf="supplyPrice.invalid && (supplyPrice.dirty || productSupplierForm.submitted)" class="text-danger mt-1">
+        <small *ngIf="supplyPrice.errors?.['required']">Supply price is required.</small>
+        <small *ngIf="supplyPrice.errors?.['min']">Enter a valid positive price.</small>
+      </div>
+    </div>
+
+    <!-- Lead Time -->
+    <div class="mb-3">
+      <label for="leadTimeDays" class="form-label fw-semibold">Lead Time (Days)</label>
+      <input
+        type="number"
+        id="leadTimeDays"
+        class="form-control"
+        name="leadTimeDays"
+        [(ngModel)]="newProductSupplier.leadTimeDays"
+        required
+        min="1"
+        #leadTimeDays="ngModel"
+        placeholder="Enter lead time"
+      >
+      <div *ngIf="leadTimeDays.invalid && (leadTimeDays.dirty || productSupplierForm.submitted)" class="text-danger mt-1">
+        <small *ngIf="leadTimeDays.errors?.['required']">Lead time is required.</small>
+        <small *ngIf="leadTimeDays.errors?.['min']">Enter a valid lead time.</small>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="d-flex justify-content-between mt-4">
+      <button type="submit" class="btn btn-primary px-4" [disabled]="productSupplierForm.invalid">
+        Add Product Supplier
+      </button>
+      <button type="button" class="btn btn-secondary px-4" (click)="router.navigate(['/product-suppliers'])">
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,33 @@
+<div class="container mt-5 p-4 bg-light rounded shadow-sm" style="max-width: 700px;">
+  <h4 class="mb-3 text-center">Add New Category</h4>
+
+  <button class="btn btn-secondary btn-sm mb-3" (click)="goBack()">← Back</button>
+
+  <div *ngIf="errorMsg" class="alert alert-danger">{{ errorMsg }}</div>
+  <div *ngIf="successMsg" class="alert alert-success">{{ successMsg }}</div>
+
+  <form (ngSubmit)="addCategory(categoryForm)" #categoryForm="ngForm" novalidate>
+    <!-- Category Name -->
+    <div class="mb-3">
+      <label class="form-label">Category Name</label>
+      <input
+        type="text"
+        class="form-control"
+        name="categoryName"
+        [(ngModel)]="newCategory.categoryName"
+        #categoryName="ngModel"
+        required
+        minlength="3"
+      />
+      <div *ngIf="categoryName.invalid && categoryName.touched" class="text-danger small mt-1">
+        <div *ngIf="categoryName.errors?.['required']">Category name is required.</div>
+        <div *ngIf="categoryName.errors?.['minlength']">Minimum 3 characters required.</div>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-between">
+      <button type="submit" class="btn btn-primary" [disabled]="categoryForm.invalid">Add Category</button>
+      <button type="button" class="btn btn-secondary" (click)="router.navigate(['/categories'])">Cancel</button>
+    </div>
+  </form>
+</div>

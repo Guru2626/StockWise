@@ -1,0 +1,41 @@
+<div class="container mt-5 p-4 bg-light rounded shadow-sm" style="max-width: 700px;">
+  <h4 class="mb-3 text-center">Add New Supplier</h4>
+   <button class="btn btn-secondary btn-sm" (click)="goBack()">
+      ← Back
+    </button>
+
+  <div *ngIf="errorMsg" class="alert alert-danger">{{ errorMsg }}</div>
+  <div *ngIf="successMsg" class="alert alert-success">{{ successMsg }}</div>
+
+  <form (ngSubmit)="addSupplier(supplierForm)" #supplierForm="ngForm">
+    <div class="mb-3">
+      <label class="form-label">Supplier Name</label>
+      <input type="text" class="form-control" name="supplierName" [(ngModel)]="newSupplier.supplierName" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input type="email" class="form-control" name="email" [(ngModel)]="newSupplier.email" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Phone</label>
+      <input type="text" class="form-control" name="phone" [(ngModel)]="newSupplier.phone" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Address</label>
+      <input type="text" class="form-control" name="address" [(ngModel)]="newSupplier.address" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">City</label>
+      <input type="text" class="form-control" name="city" [(ngModel)]="newSupplier.city" required>
+    </div>
+
+    <div class="d-flex justify-content-between">
+      <button type="submit" class="btn btn-primary">Add Supplier</button>
+      <button type="button" class="btn btn-secondary" (click)="router.navigate(['/suppliers'])">Cancel</button>
+    </div>
+  </form>
+</div>

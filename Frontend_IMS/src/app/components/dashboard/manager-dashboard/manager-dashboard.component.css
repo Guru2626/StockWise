@@ -1,0 +1,21 @@
+.table th, .table td {
+  vertical-align: middle;
+}
+
+.progress-bar {
+  border-radius: 5px;
+}
+
+input[type="date"] {
+  max-width: 180px;
+}
+
+.btn-outline-secondary i {
+  margin-right: 4px;
+}
+.mx-auto {
+  flex-grow: 1;
+  justify-content: center;
+  display: flex;
+}
+

@@ -1,0 +1,90 @@
+.dashboard-container {
+  min-height: 100vh;
+  background-color: #f8f9fc;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #5a3ec8;
+  min-height: 100vh;
+  border-radius: 0 20px 20px 0;
+}
+
+.sidebar h4 {
+  font-weight: bold;
+}
+
+.sidebar .nav-link {
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+  background-color: #7a5df0;
+  color: #fff;
+}
+
+.main-content {
+  background-color: #f9fafc;
+}
+
+.card {
+  border-radius: 15px;
+}
+
+.card h6 {
+  color: #555;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  transform: scale(1.03);
+  transition: 0.2s ease-in-out;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.card {
+  border-radius: 1rem;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+/* admin-dashboard.component.css */
+
+.bi-bell:hover {
+  color: #42A5F5;
+  transform: scale(1.1);
+  transition: all 0.2s ease-in-out;
+}
+
+img.rounded-circle {
+  transition: transform 0.2s ease-in-out;
+}
+
+img.rounded-circle:hover {
+  transform: scale(1.05);
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.modal-content {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}

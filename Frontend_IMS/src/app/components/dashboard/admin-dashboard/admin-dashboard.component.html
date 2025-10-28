@@ -1,0 +1,105 @@
+<div class="dashboard-container d-flex">
+  <!-- Sidebar -->
+  <div class="sidebar p-3 text-white">
+    <!-- ✅ Project Branding -->
+   <div class="d-flex align-items-center mb-4">
+  <i class="bi bi-box-seam fs-4 me-2 text-white"></i>
+  <h4 class="mb-0 fw-bold">StockWise</h4>
+</div>
+
+    
+
+    <ul class="nav flex-column mt-4">
+    
+      <li class="nav-item"><a class="nav-link" (click)="goToUsers()"><i class="bi bi-people"></i> Users</a></li>
+      <li class="nav-item"><a class="nav-link" (click)="goToSuppliers()"><i class="bi bi-truck"></i> Suppliers</a></li>
+      <li class="nav-item"><a class="nav-link" (click)="goToTransactions()"><i class="bi bi-cash-stack"></i> Transactions</a></li>
+      <li class="nav-item"><a class="nav-link" (click)="goToSupplierProducts()"><i class="bi bi-box-seam"></i> Supplier Products</a></li>
+    </ul>
+  </div>
+
+  <!-- Main Dashboard -->
+  <div class="main-content flex-fill p-4">
+    
+    <!-- Header (Right-aligned Profile) -->
+    <div class="d-flex justify-content-end align-items-center mb-4">
+      <div class="d-flex align-items-center gap-3 cursor-pointer" (click)="openProfile()">
+       
+        <img 
+          src="https://cdn-icons-png.flaticon.com/512/219/219986.png"
+          alt="Admin Avatar"
+          class="rounded-circle border border-2 border-light shadow-sm"
+          width="45"
+          height="45"
+          style="object-fit: cover;"
+        />
+        <div class="ms-2 text-end">
+          <strong>Admin</strong><br />
+          <small class="text-muted">Profile</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row g-3 mb-4">
+      <div class="col-md-3" *ngFor="let stat of stats; let i = index">
+        <div class="card shadow-sm border-0 {{ stat.bg }} cursor-pointer" (click)="onCardClick(i)">
+          <div class="card-body">
+            <div class="d-flex align-items-center">
+              <i class="bi {{ stat.icon }} fs-3 me-3"></i>
+              <div>
+                <h6 class="fw-semibold mb-0">{{ stat.title }}</h6>
+                <h5 class="fw-bold mb-0">{{ stat.value }}</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Transaction Chart -->
+    <div class="card mt-4 shadow-sm border-0">
+      <div class="card-body">
+        <h5 class="card-title text-center mb-3">Purchase vs Sale (Total Amount)</h5>
+        <ngx-charts-bar-vertical
+          [results]="chartData"
+          [view]="view"
+          [scheme]="colorScheme"
+          [xAxis]="true"
+          [yAxis]="true"
+          [legend]="true"
+          [showDataLabel]="true"
+          [animations]="true">
+        </ngx-charts-bar-vertical>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Profile Modal -->
+<div class="modal fade show" tabindex="-1" [ngStyle]="{ display: showProfileModal ? 'block' : 'none' }" style="background: rgba(0,0,0,0.5)">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow-lg border-0 rounded-3">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">Profile Details</h5>
+        <button type="button" class="btn-close" (click)="closeProfile()"></button>
+      </div>
+      <div class="modal-body text-center">
+        <img 
+          src="https://cdn-icons-png.flaticon.com/512/219/219986.png"
+          alt="Profile"
+          class="rounded-circle mb-3 border border-3 border-light"
+          width="100"
+          height="100"
+        />
+        <h5>{{ selectedUser?.userName }}</h5>
+        <p class="text-muted mb-1">{{ selectedUser?.email }}</p>
+        <p class="badge bg-secondary">{{ selectedUser?.roleName }}</p>
+      </div>
+      <div class="modal-footer d-flex justify-content-between">
+        <button class="btn btn-outline-secondary" (click)="closeProfile()">Close</button>
+        <button class="btn btn-danger" (click)="logout()">Logout</button>
+      </div>
+    </div>
+  </div>
+</div>

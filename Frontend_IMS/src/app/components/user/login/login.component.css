@@ -1,0 +1,64 @@
+/* Full height wrapper and center content */
+.login-wrapper {
+  height: 100vh;
+  background-color: #f2f2f2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+/* Login card */
+.login-card {
+  width: 400px;
+  background-color: #ffffff;
+  border-radius: 1rem;
+  padding: 3rem 2.5rem;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Form labels spacing */
+.form-label {
+  margin-bottom: 0.5rem;
+}
+
+/* Inputs bigger and spacing */
+.form-control-lg {
+  height: 50px;
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+}
+
+/* Input focus */
+.form-control:focus {
+  border-color: #9A616D;
+  box-shadow: 0 0 0 0.2rem rgba(154, 97, 109, 0.25);
+}
+
+/* Button styling */
+.btn-primary {
+  background-color: #9A616D;
+  border-color: #9A616D;
+  transition: all 0.3s ease;
+  font-size: 1.1rem;
+}
+
+.btn-primary:hover {
+  background-color: #7b4857;
+  border-color: #7b4857;
+}
+
+/* Error messages */
+.text-danger {
+  font-size: 0.85rem;
+}
+
+/* Links hover */
+a {
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #9A616D;
+  text-decoration: none;
+}

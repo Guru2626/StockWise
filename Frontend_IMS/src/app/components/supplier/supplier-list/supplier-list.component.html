@@ -1,0 +1,61 @@
+<div class="container mt-4">
+
+  <!-- Header with Add Button -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0">Suppliers</h4>
+    
+
+    <!-- Add Supplier Button (visible to ADMIN only) -->
+    <button
+      *ngIf="userRole === 'ROLE_ADMIN'"
+      class="btn btn-primary"
+      (click)="navigateToAddSupplier()"
+    >
+      + Add Supplier
+    </button>
+  </div>
+
+  <!-- Messages -->
+  <div *ngIf="errorMsg" class="alert alert-danger">{{ errorMsg }}</div>
+  <div *ngIf="successMsg" class="alert alert-success">{{ successMsg }}</div>
+
+  <!-- Suppliers Table -->
+  <div class="table-responsive bg-white rounded shadow-sm">
+    <table class="table table-striped align-middle mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>SUPPIER ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Address</th>
+          <th>City</th>
+          <!-- Actions column visible for Admin only -->
+          <th *ngIf="userRole === 'ROLE_ADMIN'">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let supplier of suppliers">
+          <td>{{ supplier.supplierId }}</td>
+          <td>{{ supplier.supplierName }}</td>
+          <td>{{ supplier.email }}</td>
+          <td>{{ supplier.phone }}</td>
+          <td>{{ supplier.address }}</td>
+          <td>{{ supplier.city }}</td>
+          <!-- Delete button visible for Admin only -->
+          <td *ngIf="userRole === 'ROLE_ADMIN'">
+            <button
+              class="btn btn-danger btn-sm"
+              (click)="deleteSupplier(supplier.supplierId)"
+            >
+             <i class="bi-trash"></i> 
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+<button class="btn btn-secondary btn-sm" (click)="goBack()">
+      ← Back
+    </button>
+</div>

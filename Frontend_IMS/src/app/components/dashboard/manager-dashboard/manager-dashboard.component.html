@@ -1,0 +1,184 @@
+<div class="container-fluid p-4">
+  <!-- Header -->
+ <!-- Header -->
+<!-- Header -->
+<div 
+  class="d-flex align-items-center justify-content-between mb-3 p-3 rounded shadow-sm" 
+  style="background-color: #6f42c1; color: white;"
+>
+  <!-- Left: Greeting -->
+  <h4 class="fw-bold mb-0 text-white">Hello, {{ userName }}</h4>
+
+  <!-- Center: Logo + Title -->
+  <div class="d-flex align-items-center mx-auto">
+    <i class="bi bi-box-seam fs-4 me-2 text-white"></i>
+    <h3 class="mb-0 fw-bold" style="color: #e9d8fd;">StockWise</h3>
+  </div>
+
+  <!-- Right: Profile -->
+  <div class="d-flex align-items-center gap-3 cursor-pointer" (click)="openProfile()">
+    <img 
+      src="https://cdn-icons-png.flaticon.com/512/219/219986.png"
+      alt="Manager Avatar"
+      class="rounded-circle border border-2 border-light shadow-sm"
+      width="45"
+      height="45"
+      style="object-fit: cover;"
+    />
+  </div>
+</div>
+
+
+<!-- Navigation Buttons -->
+<div class="mb-4 d-flex gap-2">
+  <button class="btn btn-outline-primary" (click)="goToCategoryList()">View Categories</button>
+  <button class="btn btn-outline-primary" (click)="goToSupplierList()">View Suppliers</button>
+  <button class="btn btn-success" (click)="goToAddProduct()">+ Add Product</button>
+</div>
+
+
+  <!-- Summary Cards -->
+  <div class="bg-light p-4 rounded mb-4 shadow-sm">
+    <div class="row text-center">
+      <div class="col-md-3 border-end">
+        <h6>Total Asset Value</h6>
+        <h3 class="fw-bold text-success">₹{{ totalAssetValue | number }}</h3>
+      </div>
+      <div class="col-md-3 border-end">
+        <h6>In Stock</h6>
+        <h3 class="fw-bold text-success">{{ inStock }}</h3>
+      </div>
+      <div class="col-md-3 border-end">
+        <h6>Low Stock</h6>
+        <h3 class="fw-bold text-warning">{{ lowStock }}</h3>
+      </div>
+      <div class="col-md-3">
+        <h6>Out of Stock</h6>
+        <h3 class="fw-bold text-danger">{{ outOfStock }}</h3>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search Bar -->
+  <div class="d-flex justify-content-between mb-3">
+    <div class="input-group w-25">
+      <span class="input-group-text bg-white border-end-0">
+        <i class="bi bi-search"></i>
+      </span>
+      <input
+        type="text"
+        class="form-control border-start-0"
+        placeholder="Search by name, category, or supplier"
+        [(ngModel)]="searchTerm"
+        (input)="onSearchChange()"
+      />
+    </div>
+  </div>
+
+  <!-- Product Table -->
+  <div class="table-responsive bg-white rounded shadow-sm">
+    <table class="table align-middle mb-0 text-center">
+      <thead class="table-light">
+        <tr>
+          <th>Product ID</th>
+          <th>Product Name</th>
+          <th>Category</th>
+          <th>Supplier</th>
+          <th>Stock</th>
+          <th>Status</th>
+          <th>Price (Per Item)</th>
+          <th>Total Value</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Products List -->
+        <tr *ngFor="let p of filteredProducts">
+          <td>{{ p.productId }}</td>
+          <td>{{ p.productName }}</td>
+          <td>{{ p.categoryName }}</td>
+          <td>{{ p.supplierName }}</td>
+          <td>{{ p.quantityInStock }}</td>
+          <td>
+            <span [class]="getStatusClass(p)">
+              {{ getStatusText(p) }}
+            </span>
+          </td>
+          <td>₹{{ p.price | number }}</td>
+          <td>₹{{ (p.price * p.quantityInStock) | number }}</td>
+          <td>
+          
+            <button class="btn btn-sm btn-outline-danger" (click)="deleteProduct(p.productId)">
+              🗑️
+            </button>
+          </td>
+        </tr>
+        <!-- Empty State -->
+        <tr *ngIf="filteredProducts.length === 0">
+          <td colspan="9" class="text-muted py-3">
+            No products found. Try adjusting your search or add a new product.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Optional Pagination (if needed) -->
+  <div class="d-flex justify-content-end mt-3" *ngIf="filteredProducts.length > 0">
+    <!-- Pagination -->
+    <nav *ngIf="totalPages > 1" class="d-flex justify-content-center mt-3">
+      <ul class="pagination">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <button class="page-link" (click)="currentPage = currentPage - 1; updatePaginatedProducts()">Previous</button>
+        </li>
+        <li
+          class="page-item"
+          *ngFor="let page of [].constructor(totalPages); let i = index"
+          [class.active]="currentPage === i + 1"
+        >
+          <button class="page-link" (click)="currentPage = i + 1; updatePaginatedProducts()">
+            {{ i + 1 }}
+          </button>
+        </li>
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <button class="page-link" (click)="currentPage = currentPage + 1; updatePaginatedProducts()">Next</button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- Profile Modal -->
+  <div
+    class="modal fade show"
+    tabindex="-1"
+    [ngStyle]="{ display: showProfileModal ? 'block' : 'none' }"
+    style="background: rgba(0,0,0,0.5)"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content shadow-lg border-0 rounded-3">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title">Profile Details</h5>
+          <button type="button" class="btn-close" (click)="closeProfile()"></button>
+        </div>
+        <div class="modal-body text-center">
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/219/219986.png"
+            alt="Profile"
+            class="rounded-circle mb-3 border border-3 border-light"
+            width="100"
+            height="100"
+          />
+          <h5>{{ userName }}</h5>
+          <p class="text-muted mb-1">{{ userEmail }}</p>
+          <p class="badge bg-secondary">{{ userRole }}</p>
+        </div>
+        <div class="modal-footer d-flex justify-content-between">
+  <button class="btn btn-outline-secondary" (click)="closeProfile()">Close</button>
+  <button class="btn btn-danger" (click)="logout()">Logout</button>
+</div>
+
+      </div>
+    </div>
+  </div>
+  <!-- Update Product Modal -->
+</div>

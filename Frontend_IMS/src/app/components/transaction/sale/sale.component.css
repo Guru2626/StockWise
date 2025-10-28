@@ -1,0 +1,15 @@
+h3 {
+  color: #198754;
+}
+
+.form-label {
+  font-weight: 500;
+}
+
+button {
+  min-width: 100px;
+}
+
+.alert {
+  font-weight: 500;
+}

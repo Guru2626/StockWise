@@ -1,0 +1,24 @@
+.container {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h3 {
+  color: #0d6efd;
+  font-weight: 600;
+}
+
+.form-label {
+  color: #333;
+}
+
+input, select {
+  border-radius: 8px;
+  padding: 10px;
+}
+
+button {
+  border-radius: 8px;
+  font-weight: 500;
+}

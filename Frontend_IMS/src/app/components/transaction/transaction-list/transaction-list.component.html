@@ -1,0 +1,68 @@
+<div class="container mt-4">
+  <h2 class="text-center mb-4">Transaction History</h2>
+  <button class="btn btn-secondary btn-sm" (click)="goBack()">
+      ← Back
+    </button>
+
+    <br><br>
+
+  <!-- Success / Error messages -->
+  <div *ngIf="successMsg" class="alert alert-success text-center">{{ successMsg }}</div>
+  <div *ngIf="errorMsg" class="alert alert-danger text-center">{{ errorMsg }}</div>
+
+  <!-- Search -->
+  <div class="d-flex justify-content-between mb-3">
+    <input
+      type="text"
+      class="form-control w-50"
+      placeholder="Search by type or product or user"
+      [(ngModel)]="searchTerm"
+      (input)="onSearchChange()"
+    />
+  </div>
+
+  <!-- Transaction Table -->
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover text-center align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>ID</th>
+          <th>Type</th>
+          <th>Product</th>
+          <th>Supplier</th>
+          <th>User</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Date</th>
+          
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let tx of filteredTransactions">
+          <td>{{ tx.transactionId }}</td>
+          <td>
+  <span
+    class="badge"
+    [ngClass]="{
+      'bg-secondary': tx.transactionType.toLowerCase() === 'purchase',
+      'bg-success': tx.transactionType.toLowerCase() === 'sale'
+    }"
+  >
+    {{ tx.transactionType | titlecase }}
+  </span>
+</td>
+
+          <td>{{ tx.productName }}</td>
+          <td>{{ tx.supplierName }}</td>
+          <td>{{ tx.userName }}</td>
+          <td>{{ tx.quantity }}</td>
+          <td>{{ tx.price | currency: 'INR' }}</td>
+          <td>{{ tx.transactionDate | date: 'medium' }}</td>
+
+          
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
