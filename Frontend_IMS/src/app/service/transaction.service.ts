@@ -9,7 +9,7 @@ import { TransactionRequestDTO } from '../models/transaction-request.model';
 })
 export class TransactionService {
 
-  private baseUrl = 'http://localhost:8080/api/transactions';
+  private baseUrl = `http://${window.location.hostname}:8080/api/transactions`;
 
   constructor(private http: HttpClient) {}
 

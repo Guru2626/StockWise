@@ -16,7 +16,7 @@ export interface JwtPayload {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private baseUrl = 'http://localhost:8080/auth';
+  private baseUrl = `http://${window.location.hostname}:8080/auth`;
 
   constructor(private http: HttpClient) {}
 

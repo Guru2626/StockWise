@@ -10,7 +10,7 @@ import { ProductDTO } from '../models/product.model';
 })
 export class ProductService {
 
-  private baseUrl = 'http://localhost:8080/api/products';
+  private baseUrl = `http://${window.location.hostname}:8080/api/products`;
 
   constructor(private http: HttpClient) {}
 

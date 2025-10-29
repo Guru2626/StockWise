@@ -8,7 +8,7 @@ import { UserDTO } from '../models/user.model';
 })
 export class AdminService {
 
-  private baseUrl = 'http://localhost:8080/api/admin';
+  private baseUrl = `http://${window.location.hostname}:8080/api/admin`;
 
   constructor(private http: HttpClient) { }
 

@@ -11,7 +11,7 @@ import { ProductSupplierRequestDTO } from '../models/product-supplier-request.mo
 })
 export class ProductSupplierService {
 
-  private baseUrl = 'http://localhost:8080/api/product-suppliers';
+  private baseUrl = `http://${window.location.hostname}:8080/api/product-suppliers`;
 
   constructor(private http: HttpClient) {}
 

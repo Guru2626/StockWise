@@ -7,7 +7,7 @@ import { CategoryRequestDTO } from '../models/category-request.model';
 @Injectable({ providedIn: 'root' })
 export class CategoryService {
 
-  private baseUrl = 'http://localhost:8080/api/categories';
+  private baseUrl = `http://${window.location.hostname}:8080/api/categories`;
 
   constructor(private http: HttpClient) {}
 

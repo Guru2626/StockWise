@@ -9,7 +9,7 @@ import { SupplierRequestDTO } from '../models/supplier-request.model';
 })
 export class SupplierService {
 
-  private baseUrl = 'http://localhost:8080/api/suppliers';
+  private baseUrl = `http://${window.location.hostname}:8080/api/suppliers`;
 
   constructor(private http: HttpClient) {}
 
