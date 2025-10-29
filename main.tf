@@ -12,7 +12,7 @@ provider "aws" {
 }
 
 # ---------------- SECURITY GROUP ----------------
-resource "aws_security_group" "ems_sg" {
+resource "aws_security_group" "ims_sg" {
   name        = "ims-sg"
   description = "Allow HTTP, App, and SSH access"
 
@@ -48,11 +48,50 @@ resource "aws_security_group" "ems_sg" {
   }
 }
 
+
+# ---------------- AMI (Amazon Linux 2) ----------------
+data "aws_ami" "amazon_linux2" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+  }
+}
+
+# ---------------- IAM ROLE + PROFILE ----------------
+resource "aws_iam_role" "ec2_role" {
+  name = "ems-ec2-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Action = "sts:AssumeRole"
+      Effect = "Allow"
+      Principal = {
+        Service = "ec2.amazonaws.com"
+      }
+    }]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "ssm_core" {
+  role       = aws_iam_role.ec2_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
+resource "aws_iam_instance_profile" "ec2_profile" {
+  name = "ems-ec2-profile"
+  role = aws_iam_role.ec2_role.name
+}
+
+
 # ---------------- EC2 INSTANCE ----------------
-resource "aws_instance" "ems_server" {
+resource "aws_instance" "ims_server" {
   ami                    = data.aws_ami.amazon_linux2.id
   instance_type          = var.instance_type
-  vpc_security_group_ids = [aws_security_group.ems_sg.id]
+  vpc_security_group_ids = [aws_security_group.ims_sg.id]
   associate_public_ip_address = true
 
   user_data = <<-EOF
