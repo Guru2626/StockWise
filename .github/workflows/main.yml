@@ -1,0 +1,44 @@
+name: Build and Push Docker images
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU (for multi arch; optional)
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push backend image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./Backend_IMS
+          file:  ./Backend_IMS/Dockerfile
+          push: true
+          tags: |
+            jaaswanth07/ims-backend:latest
+            
+
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./Frontend_IMS
+          file: ./Frontend_IMS/Dockerfile
+          push: true
+          tags: |
+            jaaswanth07/ims-frontend:latest
