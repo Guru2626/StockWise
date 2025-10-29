@@ -5,7 +5,7 @@ services:
     image: mysql:8
     container_name: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: Guru@2003
+      MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: ims_db
       MYSQL_USER: ims_user
       MYSQL_PASSWORD: ims_password
@@ -22,11 +22,12 @@ services:
     build: ./Backend_IMS
     container_name: backend-ims
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/ims_db
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/ims_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: ims_user
       SPRING_DATASOURCE_PASSWORD: ims_password
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     ports:
       - "8080:8080"
     networks:
