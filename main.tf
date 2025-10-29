@@ -91,6 +91,8 @@ resource "aws_iam_instance_profile" "ec2_profile" {
 resource "aws_instance" "ims_server" {
   ami                    = data.aws_ami.amazon_linux2.id
   instance_type          = var.instance_type
+  key_name               = "linux-pwd"
+
   vpc_security_group_ids = [aws_security_group.ims_sg.id]
   associate_public_ip_address = true
 
@@ -105,24 +107,49 @@ resource "aws_instance" "ims_server" {
               systemctl enable docker
               usermod -a -G docker ec2-user
 
-              # Pull and run IMS backend container
+              # Create Docker network
+              docker network create ims-network
+
+              # Run MySQL container
+              docker run -d \
+                --name mysql \
+                --network ims-network \
+                --restart unless-stopped \
+                -e MYSQL_ROOT_PASSWORD=root \
+                -e MYSQL_DATABASE=ims_db \
+                -e MYSQL_USER=ims_user \
+                -e MYSQL_PASSWORD=ims_password \
+                -p 3306:3306 \
+                mysql:8
+
+              # Wait for MySQL to initialize
+              sleep 30
+
+              # Run IMS backend container
               docker pull ${var.docker_username}/ims-backend:latest
               docker rm -f ims-backend || true
               docker run -d \
                 --name ims-backend \
+                --network ims-network \
                 --restart unless-stopped \
                 -p 8080:8080 \
+                -e SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/ims_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC \
+                -e SPRING_DATASOURCE_USERNAME=ims_user \
+                -e SPRING_DATASOURCE_PASSWORD=ims_password \
                 ${var.docker_username}/ims-backend:latest
 
-              # Pull and run IMS frontend container
+              # Run IMS frontend container
               docker pull ${var.docker_username}/ims-frontend:latest
               docker rm -f ims-frontend || true
               docker run -d \
                 --name ims-frontend \
+                --network ims-network \
                 --restart unless-stopped \
                 -p 80:80 \
                 ${var.docker_username}/ims-frontend:latest
               EOF
+
+
 
   tags = {
     Name = "ims-server"
