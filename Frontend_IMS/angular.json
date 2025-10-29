@@ -6,29 +6,29 @@
     "ims-frontend": {
       "projectType": "application",
       "schematics": {},
-      "root": "Frontend_IMS",
-      "sourceRoot": "Frontend_IMS/src",
+      "root": "",
+      "sourceRoot": "src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": "dist/ims-frontend",
-            "index": "Frontend_IMS/src/index.html",
-            "browser": "Frontend_IMS/src/main.ts",
+            "index": "src/index.html",
+            "browser": "src/main.ts",
             "polyfills": [
               "zone.js"
             ],
-            "tsConfig": "Frontend_IMS/tsconfig.app.json",
+            "tsConfig": "tsconfig.app.json",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "Frontend_IMS/public"
+                "input": "public"
               }
             ],
             "styles": [
               "@angular/material/prebuilt-themes/azure-blue.css",
-              "Frontend_IMS/src/styles.css",
+              "src/styles.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
           "node_modules/bootstrap-icons/font/bootstrap-icons.css",
           "src/styles.css"
@@ -83,7 +83,7 @@
               "zone.js",
               "zone.js/testing"
             ],
-            "tsConfig": "Frontend_IMS/tsconfig.spec.json",
+            "tsConfig": "tsconfig.spec.json",
             "assets": [
               {
                 "glob": "**/*",
