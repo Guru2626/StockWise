@@ -101,6 +101,13 @@ resource "aws_instance" "ims_server" {
               exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
               set -x
 
+              # Add 1GB swap memory to prevent out-of-memory errors
+              sudo fallocate -l 1G /swapfile
+              sudo chmod 600 /swapfile
+              sudo mkswap /swapfile
+              sudo swapon /swapfile
+              echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+
               yum update -y
               amazon-linux-extras install docker -y
               systemctl start docker
@@ -133,9 +140,9 @@ resource "aws_instance" "ims_server" {
                 --network ims-network \
                 --restart unless-stopped \
                 -p 8080:8080 \
-                -e SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/ims_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC \
-                -e SPRING_DATASOURCE_USERNAME=ims_user \
-                -e SPRING_DATASOURCE_PASSWORD=ims_password \
+                -e SPRING_DATASOURCE_URL="jdbc:mysql://mysql:3306/ims_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC" \
+                -e SPRING_DATASOURCE_USERNAME="ims_user" \
+                -e SPRING_DATASOURCE_PASSWORD="ims_password" \
                 ${var.docker_username}/ims-backend:latest
 
               # Run IMS frontend container
@@ -161,3 +168,15 @@ output "ec2_public_ip" {
   value       = aws_instance.ims_server.public_ip
   description = "Public IP of the IMS EC2 instance"
 }
+
+
+output "backend_url" {
+  value       = "http://${aws_instance.ims_server.public_ip}:8080"
+  description = "IMS Backend URL"
+}
+
+output "frontend_url" {
+  value       = "http://${aws_instance.ims_server.public_ip}"
+  description = "IMS Frontend URL"
+}
+
